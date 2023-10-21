@@ -7,21 +7,30 @@ using System;
 
 public class inkManager : MonoBehaviour
 {
-    [SerializeField] public TextMeshProUGUI textDialog;
-    [SerializeField] public TextMeshProUGUI textName;
+    [SerializeField] private TextMeshProUGUI textDialog;
+    [SerializeField] private TextMeshProUGUI textName;
     [SerializeField] private TextAsset inkAsset;
+    [SerializeField] private backgroundManager backgroundManager;
     Story _inkStory;
     
     // Start is called before the first frame update
     void Awake()
     {
         _inkStory = new Story(inkAsset.text);
+        
+        _inkStory.ObserveVariable("location",(string varName,object newValue)=>{
+            backgroundManager.SetBackground((string)newValue);
+        });
+        
+        backgroundManager.SetBackground((string)_inkStory.variablesState["location"]);
         WriteText(_inkStory.Continue());
+        
         
     }
     public void ProceedStory(){
         if (_inkStory.canContinue) {
             WriteText(_inkStory.Continue());
+            
         }
     }
 
