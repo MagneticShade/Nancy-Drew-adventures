@@ -30,29 +30,13 @@ public class SceneController : MonoBehaviour
 
     void ManageStory(){
 
-        characterData currentSubCharacter=new characterData("tmp","0,0,0","tmp");
+        characterData currentSubCharacter=new characterData("tmp","255,0,0","tmp");
 
         string tmp=inkManager.ProceedStory();
+       
 
         if (tmp==characterManager.MainCharacterData.getName()&&!characterManager.CheckIfExsit(characterManager.MainCharacter)){
             characterManager.AddCharacter(characterManager.MainCharacter,characterManager.MainCharacterData.getSprite());
-        }
-        else if(tmp!=""){
-
-            foreach(characterData person in characterManager.SubCharactersData){
-                if(tmp==person.getName()&&characterManager.CheckIfExsit(characterManager.SubCharacter,person.getSprite())){
-                    characterManager.AddCharacter(characterManager.SubCharacter,person.getSprite());
-                    currentSubCharacter=person;
-                }
-            }
-        }
-        else{
-            characterManager.RemoveCharacter(characterManager.MainCharacter);
-            characterManager.RemoveCharacter(characterManager.SubCharacter);
-        }
-        
-
-        if(inkManager._inkStory.currentTags.Count != 0&&inkManager._inkStory.currentTags[0]=="mainCharacter"){
 
             characterManager.SetActive(characterManager.MainCharacter);
             inkManager.ChangeNameColor(characterManager.MainCharacterData.getColor());
@@ -62,16 +46,32 @@ public class SceneController : MonoBehaviour
                 characterManager.SetInactive(characterManager.SubCharacter);
             }
         }
-        else if(inkManager._inkStory.currentTags.Count != 0&&inkManager._inkStory.currentTags[0]=="subCharacter"){
+        else if(tmp!=""){
 
-            characterManager.SetActive(characterManager.SubCharacter);
-            inkManager.ChangeNameColor(currentSubCharacter.getColor());
+            foreach(characterData person in characterManager.SubCharactersData){
+                if(tmp==person.getName()){
+                    if(characterManager.CheckIfExsit(characterManager.SubCharacter,person.getSprite())){
+                        characterManager.AddCharacter(characterManager.SubCharacter,person.getSprite());
+                    }
+                    currentSubCharacter=person;
 
-            if(characterManager.CheckIfExsit(characterManager.MainCharacter)){
+                    characterManager.SetActive(characterManager.SubCharacter);
+                        inkManager.ChangeNameColor(currentSubCharacter.getColor());
 
-                characterManager.SetInactive(characterManager.MainCharacter);
+                        if(characterManager.CheckIfExsit(characterManager.MainCharacter)){
+
+                        characterManager.SetInactive(characterManager.MainCharacter);
+            }
+                    
+
+                }
             }
         }
+        else{
+            characterManager.RemoveCharacter(characterManager.MainCharacter);
+            characterManager.RemoveCharacter(characterManager.SubCharacter);
+        }
+        
         
     }
 

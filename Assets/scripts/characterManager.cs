@@ -44,11 +44,11 @@ public class characterManager : MonoBehaviour
     }
 
     public void SetActive(Image character){
-        character.color=new Color(255,255,255);
+        character.color=new Color32(255,255,255,255);
         
     }
     public void SetInactive(Image character){
-        character.color=new Color(0,0,0);
+        character.color=new Color32(0,0,0,255);
 
     }
      
