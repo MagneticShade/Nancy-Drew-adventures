@@ -23,9 +23,13 @@ public class SceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)){
+        if(Input.GetMouseButtonDown(0)&&inkManager.textDialog.maxVisibleCharacters<inkManager.textDialog.textInfo.characterCount){
+            inkManager.SkipText();
+        }
+        else if (Input.GetMouseButtonDown(0)){
             ManageStory();
         }
+
     }
 
     void ManageStory(){
