@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
+using Ink.Runtime;
+using TMPro;
 
 public class SceneController : MonoBehaviour
 {
@@ -8,9 +12,13 @@ public class SceneController : MonoBehaviour
     [SerializeField] private inkManager inkManager;
     [SerializeField] private backgroundManager backgroundManager;
     [SerializeField] private characterManager characterManager;
-
+    [SerializeField] private GameObject choiceHolder;
+    public bool clickable;
+    GraphicRaycaster raycaster;
     void Start()
     {
+        clickable=true;
+        raycaster = GetComponent<GraphicRaycaster>();
         Bind();
 
         backgroundManager.SetBackground((string)inkManager._inkStory.variablesState["location"]);
@@ -22,17 +30,42 @@ public class SceneController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if(Input.GetMouseButtonDown(0)&&inkManager.textDialog.maxVisibleCharacters<inkManager.textDialog.textInfo.characterCount){
-            inkManager.SkipText();
-        }
-        else if (Input.GetMouseButtonDown(0)){
-            ManageStory();
+    {   
+        if(Input.GetMouseButtonDown(0)){
+            bool UI=false;
+
+            PointerEventData pointerData = new PointerEventData(EventSystem.current);
+            List<RaycastResult> results = new List<RaycastResult>();
+
+            
+            pointerData.position = Input.mousePosition;
+            raycaster.Raycast(pointerData, results);
+
+            
+            foreach (RaycastResult result in results)
+            {
+                if(result.gameObject.tag=="UI"){
+                    UI=true;
+                }
+                
+            }
+                if (clickable&&!UI)
+                {
+                    if(inkManager.textDialog.maxVisibleCharacters<inkManager.textDialog.textInfo.characterCount){
+                        inkManager.SkipText();
+                    }
+                    else{
+                        ManageStory();
+                    }
+                }
+
+            
+
         }
 
     }
 
-    void ManageStory(){
+     public void ManageStory(){
 
         characterData currentSubCharacter=new characterData("tmp","255,0,0","tmp");
 
@@ -50,6 +83,27 @@ public class SceneController : MonoBehaviour
                 characterManager.SetInactive(characterManager.SubCharacter);
             }
         }
+
+        else if(tmp=="choice"){
+            GameObject choiceField=GameObject.Find("ChoiceContainer");
+            // while(choiceField.transform.childCount>1){
+            //         Destroy(choiceField.transform.GetChild(0));
+            //     }
+            for(int i=0; i<inkManager._inkStory.currentChoices.Count;i++){
+                
+                Choice choice = inkManager._inkStory.currentChoices [i];
+                GameObject choiceButton=Resources.Load<GameObject>("Prefab/Choice");
+                GameObject inst=Instantiate(choiceButton,choiceField.transform);
+                TextMeshProUGUI text=inst.GetComponentInChildren<TextMeshProUGUI>();
+                ChoiceScript choicescript=inst.GetComponent<ChoiceScript>();
+                choicescript.Setup(i,inkManager,this);
+                text.SetText(choice.text);
+                clickable=false;
+                
+
+            } 
+        }
+
         else if(tmp!=""){
 
             foreach(characterData person in characterManager.SubCharactersData){
@@ -65,16 +119,20 @@ public class SceneController : MonoBehaviour
                         if(characterManager.CheckIfExsit(characterManager.MainCharacter)){
 
                         characterManager.SetInactive(characterManager.MainCharacter);
-            }
+                    }
                     
 
                 }
             }
         }
+       
+        
+
         else{
             characterManager.RemoveCharacter(characterManager.MainCharacter);
             characterManager.RemoveCharacter(characterManager.SubCharacter);
         }
+
         
         
     }
@@ -92,6 +150,18 @@ public class SceneController : MonoBehaviour
         inkManager._inkStory.BindExternalFunction("setMainCharacter",(string newName,string newColor,string newSpriteName)=>{
             characterManager.setMainCharacter( newName, newColor, newSpriteName);
         });
+    }
+
+    public void ChoiceSweep(){
+        
+        for (int i=choiceHolder.transform.childCount;i>0;i--) 
+        {
+
+        DestroyImmediate(choiceHolder.transform.GetChild(0).gameObject);
+
+
+        }
+        
     }
 }
 

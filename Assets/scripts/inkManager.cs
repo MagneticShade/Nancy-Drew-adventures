@@ -38,6 +38,12 @@ public class inkManager : MonoBehaviour
             string tmp= WriteText(_inkStory.Continue());
             return tmp;
         }
+        // need to make function to generate choices based on it's ammount
+        else if( _inkStory.currentChoices.Count > 0 )
+        {
+            return "choice";
+        }
+
         else{
             return "end";
         }
