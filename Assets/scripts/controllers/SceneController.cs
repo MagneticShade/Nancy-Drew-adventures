@@ -14,21 +14,103 @@ public class SceneController : MonoBehaviour
     [SerializeField] private characterManager characterManager;
     [SerializeField] private GameObject choiceHolder;
     public bool clickable;
+    private string activeCharacter;
     GraphicRaycaster raycaster;
     void Start()
     {
+        
         clickable=true;
         raycaster = GetComponent<GraphicRaycaster>();
         Bind();
 
         backgroundManager.SetBackground((string)inkManager._inkStory.variablesState["location"]);
 
+        
+
         ManageStory();
         
         
     }
 
-    // Update is called once per frame
+    public void LoadData(SaveData saveData){
+
+        characterManager.RemoveCharacter(characterManager.MainCharacter);
+        characterManager.RemoveCharacter(characterManager.SubCharacter);
+
+        if(saveData.StoryStateJson!=null){
+            inkManager._inkStory.state.LoadJson(saveData.StoryStateJson);
+        }
+
+        if(saveData.SubCharactersData!=null){
+        characterManager.SubCharactersData=saveData.SubCharactersData;
+        }
+
+        if(saveData.MainCharacterData!=null){
+        characterManager.MainCharacterData=saveData.MainCharacterData;
+        }
+
+        backgroundManager.SetBackground(saveData.location);
+
+        if(saveData.CurrentMainCharacterSpriteName!=null){
+            characterManager.AddCharacter(characterManager.MainCharacter,Resources.Load<Sprite>("characters/"+saveData.CurrentMainCharacterSpriteName));
+        }
+        else{
+            characterManager.RemoveCharacter(characterManager.MainCharacter);
+        }
+
+        if(saveData.CurrentSubCharacterSpriteName!=null){
+            characterManager.AddCharacter(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+saveData.CurrentSubCharacterSpriteName));
+        }
+        else{
+            characterManager.RemoveCharacter(characterManager.SubCharacter);
+        }
+
+        if(saveData.activeCharacter!=null){
+            if(saveData.activeCharacter=="main"){
+                characterManager.SetActive(characterManager.MainCharacter);
+                if(characterManager.SubCharacter.sprite!=null)
+                characterManager.SetInactive(characterManager.SubCharacter);
+            }
+
+            if(saveData.activeCharacter=="sub"){
+                characterManager.SetActive(characterManager.SubCharacter);
+                if(characterManager.MainCharacter.sprite!=null)
+                characterManager.SetInactive(characterManager.MainCharacter);
+            }
+        }
+        ManageStory();
+    }
+
+    public void SaveData(ref SaveData saveData){
+
+        
+        saveData.StoryStateJson=inkManager._inkStory.state.ToJson();
+        
+        saveData.SubCharactersData = characterManager.SubCharactersData;
+
+        saveData.MainCharacterData = characterManager.MainCharacterData;
+
+        saveData.location=(string)inkManager._inkStory.variablesState["location"];
+
+        if(characterManager.MainCharacter.sprite!=null){
+            saveData.CurrentMainCharacterSpriteName=characterManager.MainCharacter.sprite.name;
+        }
+        else{
+            saveData.CurrentMainCharacterSpriteName=null;
+        }
+
+        if(characterManager.SubCharacter.sprite!=null){
+            saveData.CurrentSubCharacterSpriteName=characterManager.SubCharacter.sprite.name;
+        }
+        else{
+            saveData.CurrentSubCharacterSpriteName=null;
+        }
+
+        
+        saveData.activeCharacter=activeCharacter;
+
+    }
+
     void Update()
     {   
         if(Input.GetMouseButtonDown(0)){
@@ -65,18 +147,23 @@ public class SceneController : MonoBehaviour
 
     }
 
-     public void ManageStory(){
-
+    public void ManageStory(){
         characterData currentSubCharacter=new characterData("tmp","255,0,0","tmp");
 
-        string tmp=inkManager.ProceedStory();
+        string tmp=inkManager.ProceedStory();   
        
+        if (tmp==characterManager.MainCharacterData.getName()){
 
-        if (tmp==characterManager.MainCharacterData.getName()&&!characterManager.CheckIfExsit(characterManager.MainCharacter)){
-            characterManager.AddCharacter(characterManager.MainCharacter,characterManager.MainCharacterData.getSprite());
+            if(!characterManager.CheckIfExsit(characterManager.MainCharacter)){
 
+                characterManager.AddCharacter(characterManager.MainCharacter,Resources.Load<Sprite>("characters/"+characterManager.MainCharacterData.getSpriteName()));
+            }
+            
             characterManager.SetActive(characterManager.MainCharacter);
+
             inkManager.ChangeNameColor(characterManager.MainCharacterData.getColor());
+
+            activeCharacter="main";
 
             if(characterManager.CheckIfExsit(characterManager.SubCharacter)){
 
@@ -86,9 +173,6 @@ public class SceneController : MonoBehaviour
 
         else if(tmp=="choice"){
             GameObject choiceField=GameObject.Find("ChoiceContainer");
-            // while(choiceField.transform.childCount>1){
-            //         Destroy(choiceField.transform.GetChild(0));
-            //     }
             for(int i=0; i<inkManager._inkStory.currentChoices.Count;i++){
                 
                 Choice choice = inkManager._inkStory.currentChoices [i];
@@ -108,17 +192,21 @@ public class SceneController : MonoBehaviour
 
             foreach(characterData person in characterManager.SubCharactersData){
                 if(tmp==person.getName()){
-                    if(characterManager.CheckIfExsit(characterManager.SubCharacter,person.getSprite())){
-                        characterManager.AddCharacter(characterManager.SubCharacter,person.getSprite());
+                    if(characterManager.CheckIfExsit(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+person.getSpriteName()))){
+                        
+                        characterManager.AddCharacter(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+person.getSpriteName()));
                     }
                     currentSubCharacter=person;
 
                     characterManager.SetActive(characterManager.SubCharacter);
-                        inkManager.ChangeNameColor(currentSubCharacter.getColor());
 
-                        if(characterManager.CheckIfExsit(characterManager.MainCharacter)){
+                    activeCharacter="sub";
 
-                        characterManager.SetInactive(characterManager.MainCharacter);
+                    inkManager.ChangeNameColor(currentSubCharacter.getColor());
+
+                    if(characterManager.CheckIfExsit(characterManager.MainCharacter)){
+
+                    characterManager.SetInactive(characterManager.MainCharacter);
                     }
                     
 
@@ -126,14 +214,11 @@ public class SceneController : MonoBehaviour
             }
         }
        
-        
-
         else{
+            activeCharacter="null";
             characterManager.RemoveCharacter(characterManager.MainCharacter);
             characterManager.RemoveCharacter(characterManager.SubCharacter);
         }
-
-        
         
     }
 
@@ -158,7 +243,6 @@ public class SceneController : MonoBehaviour
         {
 
         DestroyImmediate(choiceHolder.transform.GetChild(0).gameObject);
-
 
         }
         

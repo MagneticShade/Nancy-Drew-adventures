@@ -21,14 +21,12 @@ public class inkManager : MonoBehaviour
     
     public Story _inkStory;
     
-    // Start is called before the first frame update
     void Awake()
     {
         _inkStory = new Story(inkAsset.text);
 
         delay=new WaitForSeconds(1/characterPerSecond);
         emergencyDelay=new WaitForSeconds(emergencyDelayAmmount);
-
         
         
     }
@@ -38,7 +36,7 @@ public class inkManager : MonoBehaviour
             string tmp= WriteText(_inkStory.Continue());
             return tmp;
         }
-        // need to make function to generate choices based on it's ammount
+
         else if( _inkStory.currentChoices.Count > 0 )
         {
             return "choice";
@@ -92,5 +90,8 @@ public class inkManager : MonoBehaviour
         textName.color= color;
     }
 
+    public void stateLoad(string stateJson){
+        _inkStory.state.LoadJson(stateJson);
+    }
 
 }

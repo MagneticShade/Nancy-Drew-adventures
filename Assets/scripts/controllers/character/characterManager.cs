@@ -62,28 +62,5 @@ public class characterManager : MonoBehaviour
     }
    
 }
-public class characterData{
-        string name;
-        Color32 color;
-        Sprite sprite;
-
-        public characterData(string newName,string newColor,string newSpriteName){
-            name=newName;
-    
-            string [] tmp=newColor.Split(",");
-            color=new Color32(byte.Parse(tmp[0]),byte.Parse(tmp[1]),byte.Parse(tmp[2]),255);
-
-            sprite=Resources.Load<Sprite>($"characters/{newSpriteName}");
-        }
-        public string getName(){
-            return name;
-        }
-        public Color32 getColor(){
-            return color;
-        }
-        public Sprite getSprite(){
-            return sprite;
-        }
-    }
 
 
