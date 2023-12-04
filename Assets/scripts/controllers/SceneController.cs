@@ -18,7 +18,7 @@ public class SceneController : MonoBehaviour
     GraphicRaycaster raycaster;
     void Start()
     {
-        
+        SaveDataManager.instance.NewGame();
         clickable=true;
         raycaster = GetComponent<GraphicRaycaster>();
         Bind();
@@ -152,16 +152,16 @@ public class SceneController : MonoBehaviour
 
         string tmp=inkManager.ProceedStory();   
        
-        if (tmp==characterManager.MainCharacterData.getName()){
+        if (tmp==characterManager.MainCharacterData.name){
 
             if(!characterManager.CheckIfExsit(characterManager.MainCharacter)){
 
-                characterManager.AddCharacter(characterManager.MainCharacter,Resources.Load<Sprite>("characters/"+characterManager.MainCharacterData.getSpriteName()));
+                characterManager.AddCharacter(characterManager.MainCharacter,Resources.Load<Sprite>("characters/"+characterManager.MainCharacterData.spriteName));
             }
             
             characterManager.SetActive(characterManager.MainCharacter);
 
-            inkManager.ChangeNameColor(characterManager.MainCharacterData.getColor());
+            inkManager.ChangeNameColor(characterManager.MainCharacterData.color);
 
             activeCharacter="main";
 
@@ -191,10 +191,10 @@ public class SceneController : MonoBehaviour
         else if(tmp!=""){
 
             foreach(characterData person in characterManager.SubCharactersData){
-                if(tmp==person.getName()){
-                    if(characterManager.CheckIfExsit(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+person.getSpriteName()))){
+                if(tmp==person.name){
+                    if(characterManager.CheckIfExsit(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+person.spriteName))){
                         
-                        characterManager.AddCharacter(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+person.getSpriteName()));
+                        characterManager.AddCharacter(characterManager.SubCharacter,Resources.Load<Sprite>("characters/"+person.spriteName));
                     }
                     currentSubCharacter=person;
 
@@ -202,7 +202,7 @@ public class SceneController : MonoBehaviour
 
                     activeCharacter="sub";
 
-                    inkManager.ChangeNameColor(currentSubCharacter.getColor());
+                    inkManager.ChangeNameColor(currentSubCharacter.color);
 
                     if(characterManager.CheckIfExsit(characterManager.MainCharacter)){
 

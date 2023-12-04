@@ -7,7 +7,7 @@ public class characterManager : MonoBehaviour
 {
     public Image MainCharacter;
     public Image SubCharacter;
-
+    
     public characterData MainCharacterData;
     public List <characterData> SubCharactersData=new List<characterData>();
     

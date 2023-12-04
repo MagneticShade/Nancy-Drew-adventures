@@ -7,19 +7,44 @@ using System.IO;
 public class FileSystemManager 
 {
     private string dataDirPath="";
-    private string dataFileName="";
-
-    public FileSystemManager(string dataDirPath,string dataFileName){
+    public FileSystemManager(string dataDirPath){
         this.dataDirPath=dataDirPath;
-        this.dataFileName=dataFileName;
     }
 
-    // public SaveData Load(){
+    public SaveData QuickLoad(){
+        string fullpath=Path.Combine(dataDirPath,"quicksave");
+        return Load(fullpath);
+    }
+    public SaveData LoadMenu(string fileName){
+        string fullpath=Path.Combine(dataDirPath,fileName);
+        return Load(fullpath);
+    }
+    public SaveData Load(string fullpath){
+         SaveData loadedData=null;
+        if(File.Exists(fullpath)){
 
-    // }
+                string dataToLoad="";
+                using (FileStream stream = new FileStream(fullpath,FileMode.Open))
+                {
+                    using(StreamReader reader = new StreamReader(stream)){
+                        dataToLoad=reader.ReadToEnd();  
+                    }
+                }
 
-    public void Save(SaveData data){
-        string fullpath=Path.Combine(dataDirPath,dataFileName);
+                loadedData = JsonUtility.FromJson<SaveData>(dataToLoad);
+        }
+        return loadedData;
+    }
+
+    public List<FileInfo> LoadSaves(){
+        var dir = new DirectoryInfo(dataDirPath);
+        List<FileInfo> saves = new List<FileInfo>(dir.GetFiles("*.txt"));
+        return saves;
+    }
+
+    public void Save(SaveData data,string fileName){
+        string fullpath=Path.Combine(dataDirPath,fileName+"txt");
+        data.saveName=fileName;
         Directory.CreateDirectory(Path.GetDirectoryName(fullpath));
         string dataToStore=JsonUtility.ToJson(data,true);
 

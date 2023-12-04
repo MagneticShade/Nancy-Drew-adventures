@@ -7,6 +7,8 @@ public class SaveDataManager : MonoBehaviour
     [SerializeField] SceneController sceneController;
     private SaveData saveData=null;
     public static SaveDataManager instance{get; private set;}
+    [SerializeField] private string fileName;
+    private FileSystemManager fileSystemManager;
 
     private void Awake(){
         if (instance!=null){
@@ -16,22 +18,37 @@ public class SaveDataManager : MonoBehaviour
         instance=this;
     }
 
+    private void Start(){
+        this.fileSystemManager=new FileSystemManager(Application.persistentDataPath);
+    }
+    
+
     public void NewGame(){
 
         this.saveData=new SaveData();
     }
     public void LoadGame(){
-        if (this.saveData==null){
-            NewGame();
-        }
+        this.saveData=fileSystemManager.QuickLoad();
         sceneController.LoadData(saveData);
-        Debug.Log(saveData.location);
-        
+    }
+
+    public void LoadGame(string fileName){
+
+    }
+
+    public void LoadSaveGames(){
+
     }
 
     public void SaveGame(){
-       NewGame();
+
         sceneController.SaveData(ref saveData);
-        Debug.Log(saveData.location);
+        fileSystemManager.Save(saveData,"quicksave");
+    }
+
+    public void SaveGame(string saveAltName){
+        
+        sceneController.SaveData(ref saveData);
+        fileSystemManager.Save(saveData,saveAltName);
     }
 }

@@ -13,4 +13,12 @@ public class EscapeButton : MonoBehaviour
         gameObject.SetActive(false);
         sceneController.clickable=false;
     }
+
+    public void UnPause(){
+        pauseCanvas.SetActive(false);
+        Time.timeScale=1;
+        gameObject.SetActive(true);
+
+        sceneController.clickable=true;
+    }
 }

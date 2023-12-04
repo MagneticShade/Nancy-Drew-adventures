@@ -7,7 +7,7 @@ public class SaveData
 {
     public string StoryStateJson=null;
     public characterData MainCharacterData=null;
-    public List <characterData> SubCharactersData=null;
+    public List <characterData> SubCharactersData=new List<characterData>();
 
     public string CurrentMainCharacterSpriteName=null;
 
@@ -16,6 +16,8 @@ public class SaveData
     public string location="mansion";
 
     public string activeCharacter=null;
+
+    public string saveName=null;
 
 
 
