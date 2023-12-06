@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class SaveDataManager : MonoBehaviour
@@ -33,11 +34,13 @@ public class SaveDataManager : MonoBehaviour
     }
 
     public void LoadGame(string fileName){
+        this.saveData=fileSystemManager.LoadMenu(fileName);
+        sceneController.LoadData(saveData);
 
     }
 
-    public void LoadSaveGames(){
-
+    public List<FileInfo> LoadSaveGames(){
+       return fileSystemManager.LoadSaves();
     }
 
     public void SaveGame(){
@@ -50,5 +53,9 @@ public class SaveDataManager : MonoBehaviour
         
         sceneController.SaveData(ref saveData);
         fileSystemManager.Save(saveData,saveAltName);
+    }
+
+    public void DeleteSave(string fileName){
+        fileSystemManager.SaveDelete(fileName);
     }
 }

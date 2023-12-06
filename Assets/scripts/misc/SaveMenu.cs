@@ -11,9 +11,13 @@ public class SaveMenu : MonoBehaviour
 
     public void SaveNewName(){
         SaveDataManager.instance.SaveGame(inputField.text);
+        Escape();
+        
+    }
+
+    public void Escape(){
         gameObject.SetActive(false);
         pause.SetActive(true);
-        
     }
     
 }

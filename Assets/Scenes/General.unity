@@ -1276,7 +1276,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 504787398}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1416378454}
+        m_TargetAssemblyTypeName: LoadMenu, Assembly-CSharp
+        m_MethodName: Escape
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &504787398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2175,6 +2187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   load: {fileID: 1416378447}
   save: {fileID: 156870269}
+  loadMenu: {fileID: 1416378454}
 --- !u!1 &968619043
 GameObject:
   m_ObjectHideFlags: 0
@@ -3003,6 +3016,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d03f8202e76e6541b049d74d8f70b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  savesField: {fileID: 2068506847}
+  pause: {fileID: 933822809}
+  unpauseScript: {fileID: 1638699718}
 --- !u!1 &1416534976
 GameObject:
   m_ObjectHideFlags: 0
@@ -4899,7 +4915,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1817125124}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 156870276}
+        m_TargetAssemblyTypeName: SaveMenu, Assembly-CSharp
+        m_MethodName: Escape
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1817125124
 MonoBehaviour:
   m_ObjectHideFlags: 0

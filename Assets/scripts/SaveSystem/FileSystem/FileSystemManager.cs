@@ -43,7 +43,7 @@ public class FileSystemManager
     }
 
     public void Save(SaveData data,string fileName){
-        string fullpath=Path.Combine(dataDirPath,fileName+"txt");
+        string fullpath=Path.Combine(dataDirPath,fileName+".txt");
         data.saveName=fileName;
         Directory.CreateDirectory(Path.GetDirectoryName(fullpath));
         string dataToStore=JsonUtility.ToJson(data,true);
@@ -56,4 +56,12 @@ public class FileSystemManager
         }
     }
 
+    public void SaveDelete(string fileName){
+        string fullpath=Path.Combine(dataDirPath,fileName);
+        if (File.Exists(fullpath)) {
+                    // If file found, delete it
+                    File.Delete(fullpath);
+                    Console.WriteLine("File deleted.");
+                }
+    }
 }

@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject load;
     [SerializeField] private GameObject save;
 
+    [SerializeField] private LoadMenu loadMenu;
+
     public void Options(){
         //God Help Us
     }
@@ -17,6 +19,7 @@ public class PauseMenu : MonoBehaviour
         
     }
     public void Load(){
+        loadMenu.GenerateSaves(SaveDataManager.instance.LoadSaveGames());
         gameObject.SetActive(false);
         load.SetActive(true);
 

@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 4191849473865511472}
   - component: {fileID: 7466315442523605372}
   m_Layer: 5
-  m_Name: Button
+  m_Name: LoadButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,7 +388,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4191849473865511472}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8051543720082695426}
+        m_TargetAssemblyTypeName: LoadButtonLogic, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7877020474905594635
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,6 +549,7 @@ GameObject:
   - component: {fileID: 7990487065179898030}
   - component: {fileID: 1110182876552616666}
   - component: {fileID: 5295312533422829696}
+  - component: {fileID: 8051543720082695426}
   m_Layer: 5
   m_Name: SaveSlot
   m_TagString: UI
@@ -667,6 +680,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8051543720082695426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8019181521845572425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f3983635e75514bad66c4975f00740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SaveFileName: {fileID: 7459227498805355252}
 --- !u!1 &8323977969487726947
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +706,7 @@ GameObject:
   - component: {fileID: 968275747911207543}
   - component: {fileID: 4045032390604205622}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Delete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -787,4 +813,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 968275747911207543}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8051543720082695426}
+        m_TargetAssemblyTypeName: LoadButtonLogic, Assembly-CSharp
+        m_MethodName: Delete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
