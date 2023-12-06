@@ -12,7 +12,7 @@ public class FileSystemManager
     }
 
     public SaveData QuickLoad(){
-        string fullpath=Path.Combine(dataDirPath,"quicksave");
+        string fullpath=Path.Combine(dataDirPath,"quicksave.txt");
         return Load(fullpath);
     }
     public SaveData LoadMenu(string fileName){
