@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Ink.Runtime;
 using TMPro;
 
-public class SceneController : MonoBehaviour
+public class SceneController : MonoBehaviour,IDataPersistance
 {
     
     [SerializeField] private inkManager inkManager;
@@ -18,14 +18,11 @@ public class SceneController : MonoBehaviour
     GraphicRaycaster raycaster;
     void Start()
     {
-        SaveDataManager.instance.NewGame();
         clickable=true;
         raycaster = GetComponent<GraphicRaycaster>();
         Bind();
 
         backgroundManager.SetBackground((string)inkManager._inkStory.variablesState["location"]);
-
-        
 
         ManageStory();
         

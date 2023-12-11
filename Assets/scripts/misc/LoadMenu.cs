@@ -30,7 +30,9 @@ public class LoadMenu : MonoBehaviour
 
     public void UltimateEscape(){
         Escape();
-        unpauseScript.UnPause();
+        if(unpauseScript){
+            unpauseScript.UnPause();
+        }
         
     }
 

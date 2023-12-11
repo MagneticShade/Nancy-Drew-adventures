@@ -2,27 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class SaveDataManager : MonoBehaviour
 {
-    [SerializeField] SceneController sceneController;
     private SaveData saveData=null;
     public static SaveDataManager instance{get; private set;}
-    [SerializeField] private string fileName;
     private FileSystemManager fileSystemManager;
+    public string BetweenScenesSavePath;
+    private List<IDataPersistance> dataList;
 
     private void Awake(){
         if (instance!=null){
-            Debug.Log("more than one instances of SaveDataManage");
+            DestroyImmediate(this);
         }
-
-        instance=this;
+        else{
+            DontDestroyOnLoad(this);
+            instance=this;
+        }
     }
 
     private void Start(){
+        BetweenScenesSavePath=null;
         this.fileSystemManager=new FileSystemManager(Application.persistentDataPath);
     }
+    private void OnEnable(){
+        SceneManager.sceneLoaded+=OnSceneLoaded;
+
+    }
+    private void OnSceneLoaded(Scene scene,LoadSceneMode mode){
+        dataList=FindAllIDataPersistanceExamplars();
+        if(BetweenScenesSavePath!=""){
+            LoadGame(BetweenScenesSavePath);
+        }
+    }
     
+
 
     public void NewGame(){
 
@@ -30,12 +46,12 @@ public class SaveDataManager : MonoBehaviour
     }
     public void LoadGame(){
         this.saveData=fileSystemManager.QuickLoad();
-        sceneController.LoadData(saveData);
+        ForeachLoad(dataList);
     }
 
     public void LoadGame(string fileName){
         this.saveData=fileSystemManager.LoadMenu(fileName);
-        sceneController.LoadData(saveData);
+        ForeachLoad(dataList);
 
     }
 
@@ -45,17 +61,36 @@ public class SaveDataManager : MonoBehaviour
 
     public void SaveGame(){
 
-        sceneController.SaveData(ref saveData);
+        ForeachSave(dataList);
         fileSystemManager.Save(saveData,"quicksave");
     }
 
     public void SaveGame(string saveAltName){
         
-        sceneController.SaveData(ref saveData);
+        ForeachSave(dataList);
         fileSystemManager.Save(saveData,saveAltName);
     }
 
     public void DeleteSave(string fileName){
         fileSystemManager.SaveDelete(fileName);
+    }
+
+    public  List<IDataPersistance>FindAllIDataPersistanceExamplars(){
+        IEnumerable<IDataPersistance> dataPersistances=FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
+        return new List<IDataPersistance>(dataPersistances);
+    }
+
+    public void ForeachLoad(List<IDataPersistance> dataPersistances){
+        foreach(IDataPersistance dataPersistance in dataPersistances){
+            dataPersistance.LoadData(saveData);
+        }
+        Debug.Log(dataPersistances.Count());
+    }
+
+    public void ForeachSave(List<IDataPersistance> dataPersistances){
+        foreach(IDataPersistance dataPersistance in dataPersistances){
+            dataPersistance.SaveData(ref saveData);
+        }
+        Debug.Log(dataPersistances.Count());
     }
 }

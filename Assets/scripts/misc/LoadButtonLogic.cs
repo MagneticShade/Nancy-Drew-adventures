@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class LoadButtonLogic : MonoBehaviour
 {
@@ -24,7 +26,11 @@ public class LoadButtonLogic : MonoBehaviour
     }
 
     public void Load(){
-        gameObject.transform.parent.transform.parent.gameObject.GetComponent<LoadMenu>().UltimateEscape();
-        SaveDataManager.instance.LoadGame(pathToSave);
+        gameObject.transform.parent.transform.parent.transform.parent.gameObject.GetComponent<LoadMenu>().UltimateEscape();
+        SaveDataManager.instance.BetweenScenesSavePath=pathToSave;
+        SceneManager.LoadSceneAsync("General");
+
+        
+     
     }
 }
