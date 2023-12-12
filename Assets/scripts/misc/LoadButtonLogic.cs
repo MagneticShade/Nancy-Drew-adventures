@@ -13,15 +13,19 @@ public class LoadButtonLogic : MonoBehaviour
     private string pathToSave;
 
     [SerializeField] private TextMeshProUGUI SaveFileName;
-
+    private GameObject whitesheet;
     public void Setup(FileInfo file){
         saveName=Path.GetFileNameWithoutExtension(file.Name);
         pathToSave=file.Name;
         SaveFileName.SetText(saveName);
+        
     }
 
     public void Delete(){
         SaveDataManager.instance.DeleteSave(pathToSave);
+        if(whitesheet!=null){
+            whitesheet.GetComponent<MainMenuScript>().CheckSaves();
+        }
         DestroyImmediate(gameObject);
     }
 

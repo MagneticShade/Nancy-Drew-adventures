@@ -9,9 +9,13 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject save;
 
     [SerializeField] private LoadMenu loadMenu;
+    [SerializeField] private GameObject optionsMenu;
 
     public void Options(){
-        //God Help Us
+        gameObject.SetActive(false);
+        optionsMenu.SetActive(true);
+        optionsMenu.GetComponent<OptionsMenu>().Startup();
+
     }
     public void Save(){
         gameObject.SetActive(false);

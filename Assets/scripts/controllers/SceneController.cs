@@ -16,13 +16,15 @@ public class SceneController : MonoBehaviour,IDataPersistance
     public bool clickable;
     private string activeCharacter;
     GraphicRaycaster raycaster;
-    void Start()
+    void Awake()
     {
         clickable=true;
         raycaster = GetComponent<GraphicRaycaster>();
         Bind();
 
         backgroundManager.SetBackground((string)inkManager._inkStory.variablesState["location"]);
+
+        Time.timeScale=1;
 
         ManageStory();
         

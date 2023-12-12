@@ -21,14 +21,17 @@ public class inkManager : MonoBehaviour
     
     public Story _inkStory;
     
-    void Awake()
+    void OnEnable()
     {
         _inkStory = new Story(inkAsset.text);
-
-        delay=new WaitForSeconds(1/characterPerSecond);
+        
         emergencyDelay=new WaitForSeconds(emergencyDelayAmmount);
         
         
+    }
+    void Awake(){
+
+        SetNewDelay();
     }
     public string ProceedStory(){
         if (_inkStory.canContinue) {
@@ -77,6 +80,12 @@ public class inkManager : MonoBehaviour
             textDialog.maxVisibleCharacters++;
             currentVisibleCharacters++;
         }
+    }
+
+    public void SetNewDelay(){
+        characterPerSecond=PlayerPrefs.GetInt("charactersPerSecond");
+        delay=new WaitForSeconds(1/characterPerSecond);
+        
     }
 
     public void SkipText(){

@@ -26,6 +26,10 @@ public class LoadMenu : MonoBehaviour
     public void Escape(){
         gameObject.SetActive(false);
         pause.SetActive(true);
+        MainMenuScript tmp=pause.GetComponent<MainMenuScript>();
+        if(tmp!=null){
+            tmp.CheckSaves();
+        }
     }
 
     public void UltimateEscape(){

@@ -33,9 +33,10 @@ public class SaveDataManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene,LoadSceneMode mode){
         dataList=FindAllIDataPersistanceExamplars();
-        if(BetweenScenesSavePath!=""){
+        if(BetweenScenesSavePath!=null&&BetweenScenesSavePath!=""){
             LoadGame(BetweenScenesSavePath);
         }
+
     }
     
 
@@ -84,13 +85,13 @@ public class SaveDataManager : MonoBehaviour
         foreach(IDataPersistance dataPersistance in dataPersistances){
             dataPersistance.LoadData(saveData);
         }
-        Debug.Log(dataPersistances.Count());
+        
     }
 
     public void ForeachSave(List<IDataPersistance> dataPersistances){
         foreach(IDataPersistance dataPersistance in dataPersistances){
             dataPersistance.SaveData(ref saveData);
         }
-        Debug.Log(dataPersistances.Count());
+        
     }
 }
