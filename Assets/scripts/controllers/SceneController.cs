@@ -110,6 +110,15 @@ public class SceneController : MonoBehaviour,IDataPersistance
 
     }
 
+    public void QuickSave()
+    {
+        SaveDataManager.instance.SaveGame();
+    }
+    public void QuickLoad()
+    {
+        SaveDataManager.instance.LoadGame();
+    }
+
     void Update()
     {   
         if(Input.GetMouseButtonDown(0)){
